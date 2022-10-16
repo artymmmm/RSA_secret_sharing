@@ -2,7 +2,7 @@ import random
 
 
 def mod(a, m):
-    '''
+    """
     Взятие числа по модулю
     :param a: Число
     :type a: int
@@ -10,7 +10,7 @@ def mod(a, m):
     :type m: int
     :return: Число по модулю
     :rtype: int
-    '''
+    """
     if m == 0:
         raise ValueError("Деление на 0!")
     if m == 1 or a == 0:
@@ -42,7 +42,7 @@ def mod(a, m):
 
 
 def gcd(a, b):
-    '''
+    """
     НОД алгоритмом Евклида
     :param a: Первое число
     :type a: int
@@ -50,7 +50,7 @@ def gcd(a, b):
     :type b: int
     :return: НОД
     :rtype: int
-    '''
+    """
     if a == b == 0:
         raise ValueError("НОД(0, 0) не определен!")
 
@@ -69,7 +69,7 @@ def gcd(a, b):
 
 
 def lcm(a, b):
-    '''
+    """
     Нахождение НОК с помощью НОД
     :param a: Первое число
     :type a: int
@@ -77,7 +77,7 @@ def lcm(a, b):
     :type b: int
     :return: НОК
     :rtype: int
-    '''
+    """
     if a == b == 0:
         raise ValueError("НОК(0, 0) не определен!")
     if a == 0 or b == 0:
@@ -91,7 +91,7 @@ def lcm(a, b):
 
 
 def fast_pow(a, b, m):
-    '''
+    """
     Быстрое возведение в степень по модулю
     :param a: Основание степени
     :type a: int
@@ -101,7 +101,7 @@ def fast_pow(a, b, m):
     :type m: int
     :return: Результат возведения в степень
     :rtype: int
-    '''
+    """
     if b < 0:
         raise ValueError(
             "Показатель степени должен быть натуральным числом или 0!")
@@ -112,7 +112,7 @@ def fast_pow(a, b, m):
 
     a = mod(a, m)
     if mod(b, 2) == 0:
-        res = fast_pow(a, b / 2, m)
+        res = fast_pow(a, int(b / 2), m)
         product = mod(res * res, m)
         return product
     else:
@@ -122,7 +122,7 @@ def fast_pow(a, b, m):
 
 
 def fast_pow_2(a, b, m):
-    '''
+    """
     Быстрое возведение в степень по модулю с использование встроенной функции %
     :param a: Основание степени
     :type a: int
@@ -132,7 +132,7 @@ def fast_pow_2(a, b, m):
     :type m: int
     :return: Результат возведения в степень
     :rtype: int
-    '''
+    """
     if b < 0:
         raise ValueError(
             "Показатель степени должен быть натуральным числом или 0!")
@@ -143,7 +143,7 @@ def fast_pow_2(a, b, m):
 
     a = a % m
     if b % 2 == 0:
-        res = fast_pow_2(a, b / 2, m)
+        res = fast_pow_2(a, int(b / 2), m)
         product = (res * res) % m
         return product
     else:
@@ -153,16 +153,16 @@ def fast_pow_2(a, b, m):
 
 
 def prime_test_fermat(p, precision):
-    '''
+    """
     Тест Ферма на простоту числа
     :param p: Проверяемое число
     :type p: int
-    :param precision: Количество чисел, которые будут использованы при проверке.
+    :param precision: Количество чисел, которые будут использованы при проверке
     Чем больше чисел, тем больше точность
     :type precision: int
     :return: Является ли число простым?
     :rtype: bool
-    '''
+    """
     if p < 0:
         raise ValueError("Показатель степени должен быть натуральным числом!")
     if p == 2 or p == 3:
@@ -180,7 +180,7 @@ def prime_test_fermat(p, precision):
 
 
 def carmichael_func(p, q):
-    '''
+    """
     Функция Кармайкла
     Для числа n = p * q находится как НОК(p - 1, q - 1)
     :param p: Первое простое число
@@ -189,12 +189,13 @@ def carmichael_func(p, q):
     :type q: int
     :return: Значение функции Кармайкла
     :rtype: int
-    '''
+    """
     lam = lcm(p - 1, q - 1)
     return lam
 
+
 def ext_euclidean_alg(a, b):
-    '''
+    """
     Расширенный алгоритм Евклида
     :param a: Первое число
     :type a: int
@@ -202,7 +203,7 @@ def ext_euclidean_alg(a, b):
     :type b: int
     :return: НОД, корни уравнения ax + by = НОД(a, b)
     :rtype: tuple
-    '''
+    """
     a = abs(a)
     b = abs(b)
 
@@ -234,7 +235,7 @@ def ext_euclidean_alg(a, b):
 
 
 def inverse_mod(a, m):
-    '''
+    """
     Нахождение обратного по модулю через расширенный алгоритм Евклида
     :param a: Число, к которому ищется обратное
     :type a: int
@@ -242,7 +243,7 @@ def inverse_mod(a, m):
     :type m: int
     :return: Обратное
     :rtype: int
-    '''
+    """
     a = mod(a, m)
     d, x, y = ext_euclidean_alg(m, a)
 
