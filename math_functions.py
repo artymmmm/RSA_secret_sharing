@@ -4,7 +4,7 @@ import random
 def mod(a, m):
     """
     Взятие числа по модулю с бинарным поиском
-    Бинарным поиском находится минимальное частное от деления a / m,
+    Бинарным поиском находится наибольшее частное от деления a / m,
     при котором (a - q * m) < m
     Тогда a - q * m = r (остаток)
     :param a: Число
@@ -14,7 +14,6 @@ def mod(a, m):
     :return: Число по модулю
     :rtype: int
     """
-    #
     if m == 0:
         raise ValueError("Деление на 0!")
     if m == 1 or a == 0:
@@ -102,6 +101,9 @@ def lcm(a, b):
 def fast_pow(a, b, m):
     """
     Быстрое возведение в степень по модулю
+    Если показатель степени b делится на 2, то вызываем эту же функцию
+    с показетелем степени b/2
+    Если не делится, то с показателем b-1
     :param a: Основание степени
     :type a: int
     :param b: Показатель степени
@@ -160,7 +162,7 @@ def prime_test_fermat(p, precision):
 def carmichael_func(p, q):
     """
     Функция Кармайкла
-    Для числа n = p * q находится как НОК(p - 1, q - 1)
+    Для числа n = p * q, где p, q - простые, λ(n) = НОК(p - 1, q - 1)
     :param p: Первое простое число
     :type p: int
     :param q: Второе простое число
@@ -175,11 +177,11 @@ def carmichael_func(p, q):
 def ext_euclidean_alg(a, b):
     """
     Расширенный алгоритм Евклида
-    :param a: Первое число
+    :param a: Большее число
     :type a: int
-    :param b: Второе число
+    :param b: Меньшее число
     :type b: int
-    :return: НОД, корни уравнения ax + by = НОД(a, b)
+    :return: НОД, коэффициенты Безу
     :rtype: tuple
     """
     a = abs(a)
@@ -188,28 +190,17 @@ def ext_euclidean_alg(a, b):
     if a < b:
         a, b = b, a
 
-    x2 = 1
-    x1 = 0
-    y2 = 0
-    y1 = 1
+    r_old, r = a, b
+    x_old, x = 1, 0
+    y_old, y = 0, 1
 
-    while b != 0:
-        q = int(a / b)
-        r = a - q * b
-        x = x2 - q * x1
-        y = y2 - q * y1
+    while r != 0:
+        q = int(r_old / r)
+        r_old, r = r, r_old - q * r
+        x_old, x = x, x_old - q * x
+        y_old, y = y, y_old - q * y
 
-        a = b
-        b = r
-        x2 = x1
-        x1 = x
-        y2 = y1
-        y1 = y
-
-    d = a
-    x = x2
-    y = y2
-    return d, x, y
+    return r_old, x_old, y_old
 
 
 def inverse_mod(a, m):
@@ -226,6 +217,6 @@ def inverse_mod(a, m):
     d, x, y = ext_euclidean_alg(m, a)
 
     if d != 1:
-        raise ValueError("НОД(a, m) = 1, обратного значения не существует!")
+        raise ValueError("НОД(a, m) ≠ 1, обратного значения не существует!")
     else:
         return mod(y, m)
