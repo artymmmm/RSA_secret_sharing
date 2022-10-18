@@ -76,6 +76,7 @@ def get_key_shares(user_num, d, lam):
 def get_partial_signs(key_shares, message, n):
     """
     Получение подписей пользователей
+    Подпись рассчитывается по формуле s = m**d (mod n)
     :param key_shares: Доли ключей пользователей
     :type key_shares: list
     :param message: Подписываемое сообщение
@@ -95,6 +96,7 @@ def get_partial_signs(key_shares, message, n):
 def get_sign(partial_signs, n):
     """
     Получение подписи из подписей пользователей
+    Подпись вычисляется как произведение частей подписи
     :param partial_signs: Подписи пользователей
     :type partial_signs: list
     :param n: Модуль
@@ -112,6 +114,7 @@ def get_sign(partial_signs, n):
 def get_message(sign, e, n):
     """
     Получение сообщения из подписи
+    Сообщение рассчитывается по формуле s = m**e (mod n)
     :param sign: Подпись
     :type sign: int
     :param e: Открытый ключ
