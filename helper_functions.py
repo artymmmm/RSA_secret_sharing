@@ -5,6 +5,7 @@ import math_functions as mfunc
 def generate_prime_nums(start, end, amount):
     """
     Генерация простых чисел
+    Сгенеированное число проверяется на простоту с помощью теста Ферма
     :param start: Левая граница генерации
     :type start: int
     :param end: Правая граница генерации
@@ -28,17 +29,19 @@ def generate_prime_nums(start, end, amount):
     return prime_nums
 
 
-def generate_public_key(end):
+def generate_public_key(lam):
     """
     Генерация открытого ключа
-    :param end: Ограничение сверху ключа
-    :type end: int
+    Генерируется число, которое проверяется на взаимную простоту с λ(n)
+    Если взаимная простота не выполняется, функция вызывает саму себя
+    :param lam: Значение функции Кармайкла
+    :type lam: int
     :return: Открытый ключ
     :rtype: int
     """
-    e = random.randint(2, end - 1)
-    if mfunc.gcd(e, end) != 1:
-        e = generate_public_key(end)
+    e = random.randint(2, lam - 1)
+    if mfunc.gcd(e, lam) != 1:
+        e = generate_public_key(lam)
     return e
 
 
@@ -46,6 +49,8 @@ def get_key_shares(user_num, d, lam):
     """
     Получение долей секретного ключа
     Сумма долей секрета по модулю λ(n) равна секрету
+    Генерируется user_num - 1 случайных чисел, последнее число вычисляется как
+    разность d и суммы сгенерированных чисел по модулю λ(n)
     :param user_num: Количество пользователей
     :type user_num: int
     :param d: Секретный ключ
