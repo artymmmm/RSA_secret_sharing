@@ -3,7 +3,10 @@ import random
 
 def mod(a, m):
     """
-    Взятие числа по модулю
+    Взятие числа по модулю с бинарным поиском
+    Бинарным поиском находится минимальное частное от деления a / m,
+    при котором (a - q * m) < m
+    Тогда a - q * m = r (остаток)
     :param a: Число
     :type a: int
     :param m: Модуль
@@ -11,34 +14,40 @@ def mod(a, m):
     :return: Число по модулю
     :rtype: int
     """
+    #
     if m == 0:
         raise ValueError("Деление на 0!")
     if m == 1 or a == 0:
         return 0
 
-    if m > 0:
-        if a > 0:
-            while a > 0:
-                a -= m
-            if a < 0:
-                a += m
-            return a
-        if a < 0:
-            while a < 0:
-                a += m
-            return a
+    negative_dividend = False
+    if a < 0:
+        a = abs(a)
+        negative_dividend = True
 
+    negative_divisor = False
+    if m < 0:
+        m = abs(m)
+        negative_divisor = True
+
+    left = 0
+    right = a
+    while left < right:
+        q = int((left + right) / 2)
+        if a - q * m >= m:
+            left = q + 1
+        else:
+            right = q
+    res = a - left * m
+
+    if negative_dividend and negative_divisor:
+        return -res
+    elif negative_dividend and not negative_divisor:
+        return m - res
+    elif not negative_dividend and negative_divisor:
+        return res - m
     else:
-        if a > 0:
-            while a > 0:
-                a += m
-            if a > 0:
-                a -= m
-            return a
-        if a < 0:
-            while a < 0:
-                a -= m
-            return a
+        return res
 
 
 def gcd(a, b):
@@ -118,37 +127,6 @@ def fast_pow(a, b, m):
     else:
         res = fast_pow(a, b - 1, m)
         product = mod(a * res, m)
-        return product
-
-
-def fast_pow_2(a, b, m):
-    """
-    Быстрое возведение в степень по модулю с использование встроенной функции %
-    :param a: Основание степени
-    :type a: int
-    :param b: Показатель степени
-    :type b: int
-    :param m: Модуль
-    :type m: int
-    :return: Результат возведения в степень
-    :rtype: int
-    """
-    if b < 0:
-        raise ValueError(
-            "Показатель степени должен быть натуральным числом или 0!")
-    if b == 0:
-        return 1
-    if b == 1:
-        return a % m
-
-    a = a % m
-    if b % 2 == 0:
-        res = fast_pow_2(a, int(b / 2), m)
-        product = (res * res) % m
-        return product
-    else:
-        res = fast_pow_2(a, b - 1, m)
-        product = (res * a) % m
         return product
 
 
